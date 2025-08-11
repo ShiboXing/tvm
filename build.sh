@@ -17,8 +17,9 @@ echo "set(USE_VULKAN OFF)" >> config.cmake
 echo "set(USE_OPENCL OFF)" >> config.cmake
 
 # cuBLAS, cuDNN, cutlass support, turn on if needed
-echo "set(USE_CUBLAS ON)" >> config.cmake
-echo "set(USE_CUDNN  ON)" >> config.cmake
-echo "set(USE_CUTLASS ON)" >> config.cmake
+echo "set(USE_CUBLAS OFF)" >> config.cmake
+echo "set(USE_CUDNN  OFF)" >> config.cmake
+echo "set(USE_CUTLASS OFF)" >> config.cmake
 
-cmake -DCMAKE_INCLUDE_PATH="/usr/local/cuda/targets/x86_64-linux/include/" .. && cmake --build . --parallel 2
+cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_INCLUDE_PATH="/usr/local/cuda/targets/x86_64-linux/include/" .. && cmake --build . --parallel 128
