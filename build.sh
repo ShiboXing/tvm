@@ -17,9 +17,17 @@ echo "set(USE_VULKAN OFF)" >> config.cmake
 echo "set(USE_OPENCL OFF)" >> config.cmake
 
 # cuBLAS, cuDNN, cutlass support, turn on if needed
-echo "set(USE_CUBLAS OFF)" >> config.cmake
-echo "set(USE_CUDNN  OFF)" >> config.cmake
+echo "set(USE_CUBLAS ON)" >> config.cmake
+echo "set(USE_CUDNN  ON)" >> config.cmake
 echo "set(USE_CUTLASS OFF)" >> config.cmake
 
-cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
-    -DCMAKE_INCLUDE_PATH="/usr/local/cuda/targets/x86_64-linux/include/" .. && cmake --build . --parallel 128
+cmake \
+    -DCUDA_INCLUDE_DIRS=/usr/local/lib/python3.12/dist-packages/nvidia/cudnn/include/ \
+    -DCUDA_CUDNN_INCLUDE_DIRS=/usr/local/lib/python3.12/dist-packages/nvidia/cudnn/include/ \
+    -DCUDA_CUBLAS_LIBRARY=/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcublas.so \
+    -DCUDA_CUDNN_LIBRARY=/usr/local/lib/python3.12/dist-packages/nvidia/cudnn/lib/libcudnn.so.9 \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_INCLUDE_PATH="/usr/local/cuda/targets/x86_64-linux/include;\
+        /usr/local/lib/python3.12/dist-packages/nvidia/cudnn/include/" \
+    .. && cmake --build . --parallel 128
